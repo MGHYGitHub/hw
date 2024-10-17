@@ -1,174 +1,111 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<html><body>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>工资计算器</title>
-    <style>
-        /* 页面样式 */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(145deg, #f3f3f3, #e2e2e2);
-        }
-
-        /* 模糊玻璃效果的容器 */
-        .calculator-container {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            width: 350px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            font-size: 16px;
-            color: #333;
-        }
-
-        /* 输入框样式，高亮效果 */
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: none;
-            outline: none;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.3);
-            color: #333;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        input[type="text"]:focus {
-            background-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        /* 计算按钮圆润效果 */
-        .button {
-            width: 100%;
-            padding: 12px;
-            background-color: #6c63ff;
-            border: none;
-            color: white;
-            font-size: 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #5547e2;
-        }
-
-        /* 高亮显示工资结果 */
-        .result {
-            text-align: center;
-            font-size: 20px;
-            color: #ff5722;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        /* 公告样式 */
-        .notice {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #ff5722;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body>
-
-    <div class="calculator-container">
-        <!-- 在计算器底部添加公告信息 -->
-        <div class="notice">
-            <p>PS: 派遣工专用<br>本程序仅供参考使用<br>作者: 廖工</p>
-        </div>
-        <h1>工资计算器</h1>
-        
-        <!-- 标准工资输入框 -->
-        <div class="form-group">
-            <label for="baseSalary">标准工资</label>
-            <input type="text" id="baseSalary" value="4600" placeholder="4600">
-        </div>
-
-        <!-- G1 加班时数输入框 -->
-        <div class="form-group">
-            <label for="g1Hours">G1 加班时数(1.5倍)</label>
-            <input type="text" id="g1Hours" placeholder="0">
-        </div>
-
-        <!-- G2 加班时数输入框 -->
-        <div class="form-group">
-            <label for="g2Hours">G2 加班时数(2倍)</label>
-            <input type="text" id="g2Hours" placeholder="0">
-        </div>
-
-        <!-- G3 加班时数输入框 -->
-        <div class="form-group">
-            <label for="g3Hours">G3 加班时数(3倍)</label>
-            <input type="text" id="g3Hours" placeholder="0">
-        </div>
-
-        <!-- 计算按钮 -->
-        <button class="button" onclick="calculateSalary()">开始计算</button>
-
-        <!-- 实时工资显示 -->
-        <div class="result" id="totalSalary">实时工资: 0.00</div>
-    </div>
-
-
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
     <script>
-        function calculateSalary() {
-            const baseSalary = parseFloat(document.getElementById('baseSalary').value) || 0;
-            const g1Hours = parseFloat(document.getElementById('g1Hours').value) || 0;
-            const g2Hours = parseFloat(document.getElementById('g2Hours').value) || 0;
-            const g3Hours = parseFloat(document.getElementById('g3Hours').value) || 0;
-
-            // 加班费率
-            const g1Rate = 39.65517;
-            const g2Rate = 52.87356;
-            const g3Rate = 79.31035;
-
-            // 计算加班工资
-            const g1OvertimePay = g1Rate * g1Hours;
-            const g2OvertimePay = g2Rate * g2Hours;
-            const g3OvertimePay = g3Rate * g3Hours;
-
-            // 计算总工资
-            const totalSalary = baseSalary + g1OvertimePay + g2OvertimePay + g3OvertimePay;
-
-            // 更新实时工资显示
-            document.getElementById('totalSalary').textContent = `实时工资: ${totalSalary.toFixed(2)}`;
+    function decrypt() {
+        var encrypted_code = "QSwSwSLdfv60gSMdCg3p4F3MoG+zyD8S90TblK2ZJHvFsOPYGhetQvi4cKaSeGvf4rNLlB2UQbR/XsRMdpYqOroGQKTdIOD247vJiRrvpRvYe8iX3WfsCq3PKPWncuBMUIxi+CYsIQx4dJHlUk9XhmEKfL52evMzFRaVbF79rtC/E3Dw9FjyALktfkZhkZDggztZrhTiVYWgNuDA02HNEB7Zm9sf85bdduh3sPqb9J7YMkSATFQQIrITKWZKKaZIJQeOnV2UOkxq+Th3J/wSZ5rRJr0CpNFPI+LaYG1yyUOkosJA6kUaZQzQ2RwNi2a5+7FUPSdWCpyhIJmXF5k4l8ePcgwIHeiCQYNB8T2F9XULhOBhstetNagJfA2S6/OImDZYJQm9DCqcEXK0UDHLyTwRQJyfcmH8YvL50DxYguu0lvQSH67BtV6jnapNlxHYEjKqxTJ4wrQp/KFnBW/WKSP2mo/oFikU5z3+UMsc3/S1n+iFW0ki1Z3324cU1giZehfJLbMLcTQfp09YGIo11fZXdJsELr5FMZ/cikrC4KU3EjzlakoC0Qg35GQRTMqK7akkH41hI6Jigi+GwBJcaedyxzV/3ozwZ/alzVj59puxETTzZttl084RdHiaSFTnuC1wWyg2d+/QIVP5tuN3YXsrgzDRQlt8YMhgmkzf92vLa+80Q4MD3k8UxTu4ei430n9raEdt/hguE0uvvz8/pGhdG29V26SztHsz6VqxHP6eF5faloCZiMcK3ac3B9eiguL9b8ScxqluAIGTND3FenC/ByaYdmhTFrEr0DKFFer9ZHBfsrBNbGMt6OW+iw4mnl94Cgo4CTVZf1FjRrJRGU+r2KYifg/f6tVbg+I+a4M9fg5AYY0MNNNYbgyjcx0PwQ3whbCC5F214GOUn90OUBsTjA0GeSNu+e60pA+tAfXBO5jwluV0h9ONRTWAaXFCScfEcxkHPvCiDDc+f4GxGIpzrrto67l7gmBzpLx7dOKjyMriLeQtDq0Fg+kXHSsCL7kB2u5tOD+zL1NjU/8bSbD1S3dWWjZlhbHiSvau0hPSh9tvbwRP0KssCCe261YIv8VgMsELm94ZxH7hkBdP6e6YSSJQT9drIZinkyR+Z8YJn6ZLSOrJNDkDykwTMMFV2HmzCRhBveZX5gp8zMe5j8u1/WsvrflDAZClcNh0/rde6Goe7sMDwP8BbNZMLHogdNJLjr0SNpltup7JQiu/TsOgfBPwxErHBN6/uwxHcPmqan911v0nsUyAyH10Psp00rXh61b4vWZtry3QcjCkGO5WpLIA/PtGq5OUTkBO6JqYJaj9A5OPJtszXTfYYtfwr0EQsF2C1YifkQD2WEG4dq4HVFbpbfMKL1Ixz4J0iOV8Ls3ErSqkiANfKR9PJTOWPkgWXS5tzIRcbAPjzu0Rk1E8jl/SEnx6VXsqmDHUQLApRE9ff8e2n85YGlq1Imml4D5PU4yuuFxOb674lMiCNKxL5HbgSDoLyLWkfy7tAo2Toad5LoEnfjSIso/QQ5GZVg+CQcYrOmTIrIkGc1HJc1H2Yfv7Fglkqb2Zj4ymeyGm19w6uLoS+fAGsw0oHgOehMq3ISF4Hyx2i5dUz4AoYXYjWMtc5oKTRgnxXKWUXidCxRreMtuuwArmrNfByTe9zrJzm3eUtI4412cTAOXSE3ximyEhU2cTNqa9BjMCZT2Hy83i7aiP6/2TXUSclnsLXHFYFO108AJiezSYZtY3Liu09hWSLN7Bn0j7p34cRqsSJAY5KfpHgjMeyE0odZIQRiElFvbu2uqWul9qQaEmfub8wt+WD4c+y/G5mI787ipZaSRgVmhSJv/4k21t4Y/mcy7r7aVC6dq5gJzQgDGVrX2a260Byqe15psL1NyE0cL+8c+lF0y0sIDjRCa3Ry7DVTmDxvg2Erl4Cl6EXXLfUMNPHXBj/BITU28+DfLN4oWS+dNErBwOjNFHFcyom09o33fmsAxLeY06RGc1VciREPoSihLtqVpF0H6S+vMgDKYIKL2jCDjoKUdAjz/rHXns1ar10u65MgV/iAZFL7iZcoNv1KJ77jeFzh3aiEwXKCZOCaCKF9oFkS9QfLocrsCj40tNVBcnFJIYysMCJq7O2vIA0tyXaJil5at18bKeCLLbUxlfEU8q6Zm9SNm2q8nhMIP3X1aPxew56AF+Oev0LwQ3OXLjfYHwyENiP3g/ZGwDIFKAoLCNjx7S0ehQ6tuH53LHNX/ejPBn9qXNWPn2m6q1+o0/S+jIcVLpzhb/zEsSi2UiOh5JjOitwwve3i5GBuXoCotvTIfKO79caKcnfwXl75McmfjHbxITDHYXHkGeFXVzl1cRAsOe7D+BSBh5Wr6r0LGvlXAYGMszH7U0SO3sADfbWNAEsVRlaW3a6svmXXUX+4y75f8NqL534lryXR3m7urvpahKpa1YPwk4/rH6oPwbu+r9SU9HOB7CLy/6SrwqSjFdESP06qzfQ6pU3B/oeqSNp7XnYPbkJsZjacmgP41iYyGkzi6VV54tSnf+8c+lF0y0sIDjRCa3Ry7DIoGzlfPvcvnCEaubl7A2+WLuOKWTcwBxERqK3YijFCdbjhUUJ2YyJOBEgMvTquYiYdrNCaYkvP3koOV1Pxv7RKmpvOHJSgDrPAqyDdfBRjUz6rvKkq470Tx/7IbWU3waEEHplvQeZW7U+IJIYAV1piLfZfnSTzxgpdAmw8qvFAXUnt8odR84CQ0l7keLgpQ3+Av0KocEStI1s9EVrmJ8E77sKFbqr840eyTyRTGUUqqCVpFy6QCilxl42b+heuEO4FfzD5QxL5yM0x8NUM2ASsz9Jv0K+r8G5fttsq4Of3EDGYSiecxQfhxf12FVOk019CMvn43d3fxCAY975UfD1HHJZ4zG6APdut9BxHjhMRz2gOjtvpwFv4xm4pcBv49OW1gc7OqZY3ZOm+35HzaD/gwxxLE9R77RjBV+mUT2GH3P277efiVyQWUPiV1KIii1jQ7XaOOSo0vnUdR8AT5yWszY2+BbMwfynO0v78t5VAecm3iXeCzqPYt/P+UA1p5km49BgYe9mG/6Or1B3Ox1odJn2X7SIq1rbaae0vw+/SCROPXPUabdru5zfKDvgvSJ2C6yMbGb85vzesSa8yohu2WSi6jafoTxlAZAQ/BoiNtkLgc5kkh5EBQsb+OmHlWVxgHXajqi7PT1tQW3gVMnm7k1hM6gly6j2HJtk3tYXNfNTaJibxz/MAuFo3fpJjR5xwucjZAXUJZ0dAh9maFEu5vnUKTe5mYZJZOCBW/0sgVfFl6z9HCpKaillV8bkNIYT1sYUlL0hXv36yMfMcSjScUO6xQoZk/ytKzIcaWCe5gmDQcQIceYv+xEK/P4oFCFCB/pzPCj7zdx545IftRFvxd6iyDzI0+rdI9KctZH7OsZSzF0akzOVGLAmuju3oW0Lu4x99psvCDDeH4BlXUYMuhJXJtoIAJjLD/vRWFVjUsa1KjvsuffD2qzu3Bw9kBwJHgnPhYizRhnytqJZPVKyEcQTQq36XgyQF98bcWTyeFE8/J/qHQgnYAPTzWm9vTUp2FDjhB/n7Mu7Y5FeGEuFHELatMUR0zXlBSyPY7MWe3oyOeqTG9Lmko/lt4Pb7eTMVa1puFksxVez+b1MaI8+U4TieEg1tnvmgA4PKqYGUiLoAH5Cb4KeXQL+WS8zhjKNNbUZ3DnNpVjQn8zws1PrtADzmj5M7YCrGjoJ3rWTBtsCaxAvBGZFdcG6eZnQrYos53nEjMN0qvvKIxN1iEqOX2wgQDH+3rF6QFMlo7u1GcpYEbn5fkU6hF2U1jQgrngM3AaDEZCMNZy1QNikM500HfpbGCYrljpuucR9g0dtNzWgyfGcx7D1GfxJVtuUDke9ntBxzVNkeo3Hmk5zGUaREKn6GpRmfEMeOpv+qFm2i2BHlflt3lhXWX29vjLu0t+NmHrTHQg5Z3hdnZPhwKpXaTupt35Nxazlgq9w91Gml0eGJyzlCDp34Ds4JsOsfm6URapjrWHccGJ/9ZsTNZKaCHuGRgb6cvjgkIfCqKPZEX46nNyYiN/fEV3emUpKXJVhFDHbT4zkkcgZ7WYVIntodIBXZxjLIopSU2yVmc4PCd50mJgBEjp80iGyQ07M4bkQeYevIhLg+0/L4DAAkHvzktVY9lmH/Mm7AaGxFJEjHjjoYYQYZaMCpK+i+kfRTv8j+42qooE0yXNww2VglkTgniSxks2fKJ4OUF3wMg4suAdwpENEMw9k373iVg2Tcdig05MyHj139tLDTMYvCDMuMZA1UmCPtNjez4NWEeAEIXRTohdmyMXKe0LAikT2fGmXsp3IumQGWpgSNEQojwPTCj76nuO3EDTd/HTZteeb5ftl0SI5SEbdR7uSjDhCVUeVF69x4XCBq4FrUW5HTGGCUWpwJFXMnWFAsKXaJjaavEZb+DfPJYsY4b+YKnK7NsVOtCGPT7nfF962REHyBgmyiMDNSuJn7iPMtHdx6Rudiov8yqHEHFMHueAB1NoLtehrHuMW0KgLDkdEDORYL8/DWiZZBKMP3VMT/3sn3T0/45LVzGUKK68I2aMCeNmc7K3VuubOnnxgDqGfKTOvNibqxTwl0/6bxjkpjpBaAv/CZZ/yiv/f8P1oYrUGuxFU4reb6+gLwk2rHt1XnJKs3ukPidrqBKk2hlmADkSngNymshSZN1e6SkzjjeFYRaLQdv84ATDX+gSZZtzA/lkFzt62Q/Qi+NnQE0YfocKvMfvKG7RTohdmyMXKe0LAikT2fGmXsp3IumQGWpgSNEQojwPTCj76nuO3EDTd/HTZteeb5dBOAGQd3yM5lpwBwzgdKKtaejkNaYCsamoMoBBLa907wRYORM949Vf4voLiLIsreax49jPICBvCEUieFQ0KE52ayk6KnB+Xeu5weqRPoSAo4Y7FyehDbBPAVnFn+o+bnUL+3LJkdApT2PtzFHGZN/ORWGUPkgL3ttvNQkwfly5Q6LpZpT4sQYvtF1gCcPLAOZSop4GiIkkZac5qiOvQ0LSBZu7Zu/MgChRpeaFj6VjbekDgkNnHCAmcjj6Tgx3Dh4E5BG5HMT14bUtg/7iytJAtxdVq2ncpkfX2tjSef8LQLOy7p44cKeaHrTLv0iIvpa+IOtgzdLPtFPQC4DDDBHJ1tQ6IVjpmEKflnNppdNDqxFBra+b0SwNPws7New2BsgQH+3+aJZ+olggfyFBbelduOwEELAmLszCmVPzleFQ0aMDirtl0Ws+iaWbGbv7qHyN54xjJmW4ECT4WGXkoAFvoRRNz0pVy2bNgjBDX7m206Vu97DY2kV8xSwLT3XAm1dp06EohnSEBrpht1i3wmUvLl0INWbJnolNZl0Mdr/VVEJ1uvRA627JDmNTWXPy5bOfZCc6qElCm7GYhxvgGXofqBYRBRXFje5Ix0WIJFO92C7zkbhyH6V7tmqLVBOtRPwPCDhmLHkxpXw06mxwo2G9L0H0CJGPQjPW3RqrWslaaiOcRAIYYoG1uKll2GsAPNJFP1usTJh49xYW5AxStJbYAXbYoufjDALEzQJ1Fu5+f/P6pYysDAWlIixpatSWwNp3q87TTTSG6bEKsESj+Au73IbTxo7Nxe0WYthdLQvEf2leLSAa6ZCVDyocHnsApur3t9l116sx9v5VUR3qrIDa+5OU4z68+wjKuPOUBm3r7IAvdKUFuM2120QYRd1Ut8Up9spCXAe/2BvZRZRQXcZnAzp9v/ER6KjuasRvWQqwkvShkqdoysntGeHyjGX7v0mm0zvvRca0QxPZtpROMSCIsB47Y3y1ifd2LOaz+ACG+/82Rnaf7FYkeKBNfVTjTfJFP1usTJh49xYW5AxStJbYk2kfBKtpvWVa+D/q1tGctisGvJH7FqzDKbTtEyC/CLV6H86hvyemuy6WmoKmna44G2b+t5HnxnrbsFCJMWzPr7FbIzTZqLaXpwe+0M4D02GJ8wJqDIYjB4bCHovnEoQ1nkmw3/2t3lfKIMdlWDFLosKFm9HXLKWapOR57xno2NbuXjJL1FL4I4LJ3krYY8G7KH3rgHcpNpLzQ2Y8HdDKVJrUC3Guh6ejtUEOuWlk9OnQsnHJGaeyAsl9/DLe2AE+E7/GZIZ19fmbmliYku1II0qhaamOR/B9YuY0GNiSBxM+yy3NnwFsLtnJU7UKCXEUbMkVCrLYcttUeHf7VEiK8EAXN2SjjInYdiikUh4/797n/kTsptUFuLcNceKwWh93SR5CbVpUF9uwpNG4SBf37xAC3XA6OY6tno7Ivi4oT2cbKhjVkdNttjgDGxT4JxnV9mpZn3txO8x9xgcQgGtGdnhgIpFEBEKXjUqBM5C8MMF9W0Rb1uqVWGq0IkB8BdEu4JtG5VRfXxbh9OKxQ6evpZCzVMgZs7RlBHt9LI5DrUQkq9w9iPRZInV+c0JYw8fH4xtksgzhi1SQUO0YiRxL9coCqCZskRbp7nVOcKnK+ycDfLQOIkbGELKGcxH7Y5SSTEExm0iG6BPLzfOfh+U6JnM1uAKV2c3d6eNWTfKtvMvigRkqaoXqEagFgZ97+JB5WTtFtt8idTfNTyDKXZnUwzreX/15y/D5EW8fn5JrcZZR1pNKT6MUxXpWRcVhkpgo";
+        var password = document.getElementById('password_entry').value;
+        try {
+            var key = CryptoJS.enc.Utf8.parse(password.padEnd(32, ' '));
+            var decrypted = CryptoJS.AES.decrypt(encrypted_code, key, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+            if (!decryptedText) {
+                throw new Error("解密失败");
+            }
+            document.open();
+            document.write(decryptedText);
+            document.close();
+        } catch (e) {
+            alert("解密失败，请检查密码是否正确。");
         }
+    }
+    function togglePassword() {
+        var passwordInput = document.getElementById('password_entry');
+        var eyeIcon = document.getElementById('eye_icon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.textContent = '🔒';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.textContent = '👁️';
+        }
+    }
     </script>
-
-</body>
-</html>
+    <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    .container {
+        text-align: center;
+        width: 100%;
+        max-width: 450px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        border-radius: 8px;
+    }
+    .button-container {
+        margin-top: 20px;
+    }
+    button {
+        width: 100%;
+        padding: 20px;
+        font-size: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    @media only screen and (max-width: 600px) {
+        button {
+            padding: 15px;
+            font-size: 18px;
+        }
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    .password-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .password-entry {
+        width: calc(100% - 30px);
+        padding: 12px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+    }
+    .eye-icon {
+        padding: 12px;
+        cursor: pointer;
+        background: #ccc;
+        border: 1px solid #ccc;
+        border-radius: 0 5px 5px 0;
+    }
+    </style>
+    <div class="container">
+        <div class="password-container">
+            <input type="password" class="password-entry" id="password_entry" placeholder="输入密码...">
+            <span class="eye-icon" id="eye_icon" onclick="togglePassword()">👁️</span>
+        </div>
+        <div class="button-container">
+            <button onclick="decrypt()">🔓 解密页面</button>
+        </div>
+    </div>
+    </body></html>
